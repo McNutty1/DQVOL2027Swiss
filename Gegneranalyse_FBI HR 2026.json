@@ -4,6 +4,7 @@
     {
       "round": 1,
       "date": "5.11.2026",
+	  "teamScore": 44,
       "players": [
         {
           "name": "Jessica",
@@ -42,6 +43,7 @@
     {
       "round": 2,
       "date": "5.11.2026",
+      "teamScore": 33,	  
       "players": [
         {
           "name": "Alex",
@@ -80,6 +82,7 @@
     {
       "round": 3,
       "date": "5.11.2026",
+      "teamScore": 45,	  
       "players": [
         {
           "name": "Felix",
@@ -118,6 +121,7 @@
     {
       "round": 4,
       "date": "5.11.2026",
+      "teamScore": 39,	  
       "players": [
         {
           "name": "Jessica",
@@ -156,6 +160,7 @@
     {
       "round": 5,
       "date": "5.11.2026",
+      "teamScore": 45,	  
       "players": [
         {
           "name": "Alex",
@@ -194,6 +199,7 @@
     {
       "round": 6,
       "date": "5.11.2026",
+      "teamScore": 34,	  
       "players": [
         {
           "name": "Jonas",
@@ -232,6 +238,7 @@
     {
       "round": 7,
       "date": "5.11.2026",
+      "teamScore": 39,	  
       "players": [
         {
           "name": "Alex",
