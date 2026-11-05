@@ -1,0 +1,278 @@
+{
+  "opponentName": "AMP",
+  "matches": [
+    {
+      "round": 1,
+      "date": "5.11.2026",
+      "teamScore": 52,
+      "players": [
+        {
+          "name": "Leo",
+          "pos": 1,
+          "cat1": "Kunst & Kultur",
+          "correct1": 2,
+          "cat2": "Geschichte",
+          "correct2": 2
+        },
+        {
+          "name": "Henning",
+          "pos": 2,
+          "cat1": "Sport & Spiele",
+          "correct1": 1,
+          "cat2": "Sport & Spiele",
+          "correct2": 0
+        },
+        {
+          "name": "Oliver",
+          "pos": 3,
+          "cat1": "Bonus 1",
+          "correct1": 2,
+          "cat2": "Politik & Wirtschaft",
+          "correct2": 0
+        },
+        {
+          "name": "Lars",
+          "pos": 4,
+          "cat1": "Literatur & Medien",
+          "correct1": 2,
+          "cat2": "Lifestyle & Technik",
+          "correct2": 2
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "date": "5.11.2026",
+      "teamScore": 33,
+      "players": [
+        {
+          "name": "Sebastian",
+          "pos": 1,
+          "cat1": "Geschichte",
+          "correct1": 1,
+          "cat2": "Geschichte",
+          "correct2": 2
+        },
+        {
+          "name": "Oliver",
+          "pos": 2,
+          "cat1": "Welt & Natur",
+          "correct1": 2,
+          "cat2": "Musik",
+          "correct2": 1
+        },
+        {
+          "name": "Leo",
+          "pos": 3,
+          "cat1": "Politik & Wirtschaft",
+          "correct1": 1,
+          "cat2": "Kunst & Kultur",
+          "correct2": 1
+        },
+        {
+          "name": "Henning",
+          "pos": 4,
+          "cat1": "Bonus 2",
+          "correct1": 0,
+          "cat2": "Politik & Wirtschaft",
+          "correct2": 0
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "date": "5.11.2026",
+      "teamScore": 52,
+      "players": [
+        {
+          "name": "Henning",
+          "pos": 1,
+          "cat1": "Politik & Wirtschaft",
+          "correct1": 1,
+          "cat2": "Sport & Spiele",
+          "correct2": 2
+        },
+        {
+          "name": "Leo",
+          "pos": 2,
+          "cat1": "Geschichte",
+          "correct1": 2,
+          "cat2": "Geschichte",
+          "correct2": 2
+        },
+        {
+          "name": "Lars",
+          "pos": 3,
+          "cat1": "Sport & Spiele",
+          "correct1": 2,
+          "cat2": "Bonus 1",
+          "correct2": 2
+        },
+        {
+          "name": "Johanna",
+          "pos": 4,
+          "cat1": "Lifestyle & Technik",
+          "correct1": 1,
+          "cat2": "Bonus 2",
+          "correct2": 0
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "date": "5.11.2026",
+      "teamScore": 43,
+      "players": [
+        {
+          "name": "Sebastian",
+          "pos": 1,
+          "cat1": "Geschichte",
+          "correct1": 0,
+          "cat2": "Politik & Wirtschaft",
+          "correct2": 1
+        },
+        {
+          "name": "Henning",
+          "pos": 2,
+          "cat1": "Politik & Wirtschaft",
+          "correct1": 1,
+          "cat2": "Geschichte",
+          "correct2": 0
+        },
+        {
+          "name": "Oliver",
+          "pos": 3,
+          "cat1": "Sport & Spiele",
+          "correct1": 1,
+          "cat2": "Bonus 2",
+          "correct2": 1
+        },
+        {
+          "name": "Leo",
+          "pos": 4,
+          "cat1": "Kunst & Kultur",
+          "correct1": 1,
+          "cat2": "Bonus 1",
+          "correct2": 2
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "date": "5.11.2026",
+      "teamScore": 56,
+      "players": [
+        {
+          "name": "Leo",
+          "pos": 1,
+          "cat1": "Geschichte",
+          "correct1": 2,
+          "cat2": "Kunst & Kultur",
+          "correct2": 1
+        },
+        {
+          "name": "Lars",
+          "pos": 2,
+          "cat1": "Film & Fernsehen",
+          "correct1": 1,
+          "cat2": "Welt & Natur",
+          "correct2": 2
+        },
+        {
+          "name": "Henning",
+          "pos": 3,
+          "cat1": "Politik & Wirtschaft",
+          "correct1": 2,
+          "cat2": "Politik & Wirtschaft",
+          "correct2": 2
+        },
+        {
+          "name": "Oliver",
+          "pos": 4,
+          "cat1": "Welt & Natur",
+          "correct1": 1,
+          "cat2": "Musik",
+          "correct2": 1
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "date": "5.11.2026",
+      "teamScore": 38,
+      "players": [
+        {
+          "name": "Sebastian",
+          "pos": 1,
+          "cat1": "Bonus 1",
+          "correct1": 1,
+          "cat2": "Geschichte",
+          "correct2": 1
+        },
+        {
+          "name": "Oliver",
+          "pos": 2,
+          "cat1": "Musik",
+          "correct1": 1,
+          "cat2": "Musik",
+          "correct2": 2
+        },
+        {
+          "name": "Henning",
+          "pos": 3,
+          "cat1": "Politik & Wirtschaft",
+          "correct1": 1,
+          "cat2": "Politik & Wirtschaft",
+          "correct2": 1
+        },
+        {
+          "name": "Leo",
+          "pos": 4,
+          "cat1": "Kunst & Kultur",
+          "correct1": 1,
+          "cat2": "Kunst & Kultur",
+          "correct2": 0
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "date": "5.11.2026",
+      "teamScore": 38,
+      "players": [
+        {
+          "name": "Leo",
+          "pos": 1,
+          "cat1": "Geschichte",
+          "correct1": 2,
+          "cat2": "Geschichte",
+          "correct2": 1
+        },
+        {
+          "name": "Oliver",
+          "pos": 2,
+          "cat1": "Sport & Spiele",
+          "correct1": 1,
+          "cat2": "Musik",
+          "correct2": 1
+        },
+        {
+          "name": "Johanna",
+          "pos": 3,
+          "cat1": "Wissenschaft",
+          "correct1": 0,
+          "cat2": "Wissenschaft",
+          "correct2": 1
+        },
+        {
+          "name": "Lars",
+          "pos": 4,
+          "cat1": "Literatur & Medien",
+          "correct1": 1,
+          "cat2": "Lifestyle & Technik",
+          "correct2": 1
+        }
+      ]
+    }
+  ]
+}
