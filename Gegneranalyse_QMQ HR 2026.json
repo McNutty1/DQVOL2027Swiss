@@ -4,6 +4,7 @@
     {
       "round": 1,
       "date": "5.11.2026",
+      "teamScore": 28,	  
       "players": [
         {
           "name": "Annika",
@@ -42,6 +43,7 @@
     {
       "round": 2,
       "date": "5.11.2026",
+      "teamScore": 24,	  
       "players": [
         {
           "name": "Peter",
@@ -80,6 +82,7 @@
     {
       "round": 3,
       "date": "5.11.2026",
+      "teamScore": 26,	  
       "players": [
         {
           "name": "Wiebke",
@@ -118,6 +121,7 @@
     {
       "round": 4,
       "date": "5.11.2026",
+      "teamScore": 33,	  
       "players": [
         {
           "name": "Jörn",
@@ -156,6 +160,7 @@
     {
       "round": 5,
       "date": "5.11.2026",
+      "teamScore": 28,	  
       "players": [
         {
           "name": "Frauke",
@@ -194,6 +199,7 @@
     {
       "round": 6,
       "date": "5.11.2026",
+      "teamScore": 24,	  
       "players": [
         {
           "name": "Wiebke",
@@ -232,6 +238,7 @@
     {
       "round": 7,
       "date": "5.11.2026",
+      "teamScore": 37,	  
       "players": [
         {
           "name": "Wiebke",
