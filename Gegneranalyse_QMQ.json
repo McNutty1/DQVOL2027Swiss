@@ -1,41 +1,41 @@
 {
-  "opponentName": "FBI",
+  "opponentName": "QMQ",
   "matches": [
     {
       "round": 1,
       "date": "5.11.2026",
       "players": [
         {
-          "name": "Jessica",
+          "name": "Annika",
           "pos": 1,
-          "cat1": "Musik",
-          "correct1": 1,
-          "cat2": "Film & Fernsehen",
-          "correct2": 1
-        },
-        {
-          "name": "Dennis",
-          "pos": 2,
           "cat1": "Kunst & Kultur",
           "correct1": 1,
-          "cat2": "Kunst & Kultur",
-          "correct2": 1
+          "cat2": "Welt & Natur",
+          "correct2": 0
         },
         {
-          "name": "Jonas",
-          "pos": 3,
-          "cat1": "Film & Fernsehen",
+          "name": "Peter",
+          "pos": 2,
+          "cat1": "Bonus 2",
           "correct1": 2,
-          "cat2": "Politik & Wirtschaft",
-          "correct2": 1
+          "cat2": "Geschichte",
+          "correct2": 0
         },
         {
-          "name": "Felix",
+          "name": "Wiebke",
+          "pos": 3,
+          "cat1": "Musik",
+          "correct1": 0,
+          "cat2": "Lifestyle & Technik",
+          "correct2": 0
+        },
+        {
+          "name": "Benjamin",
           "pos": 4,
-          "cat1": "Geschichte",
+          "cat1": "Politik & Wirtschaft",
           "correct1": 1,
-          "cat2": "Wissenschaft",
-          "correct2": 2
+          "cat2": "Kunst & Kultur",
+          "correct2": 0
         }
       ]
     },
@@ -44,36 +44,36 @@
       "date": "5.11.2026",
       "players": [
         {
-          "name": "Alex",
+          "name": "Peter",
           "pos": 1,
-          "cat1": "Politik & Wirtschaft",
-          "correct1": 1,
-          "cat2": "Politik & Wirtschaft",
+          "cat1": "Geschichte",
+          "correct1": 2,
+          "cat2": "Geschichte",
           "correct2": 1
         },
         {
-          "name": "Jonas",
+          "name": "Jörn",
           "pos": 2,
-          "cat1": "Film & Fernsehen",
-          "correct1": 1,
-          "cat2": "Film & Fernsehen",
-          "correct2": 1
-        },
-        {
-          "name": "Felix",
-          "pos": 3,
-          "cat1": "Welt & Natur",
+          "cat1": "Literatur & Medien",
           "correct1": 0,
-          "cat2": "Kunst & Kultur",
+          "cat2": "Bonus 2",
+          "correct2": 0
+        },
+        {
+          "name": "Annika",
+          "pos": 3,
+          "cat1": "Kunst & Kultur",
+          "correct1": 1,
+          "cat2": "Lifestyle & Technik",
           "correct2": 1
         },
         {
-          "name": "Jonas T",
+          "name": "Benjamin",
           "pos": 4,
-          "cat1": "Bonus 1",
+          "cat1": "Bonus 2",
           "correct1": 1,
-          "cat2": "Wissenschaft",
-          "correct2": 0
+          "cat2": "Musik",
+          "correct2": 1
         }
       ]
     },
@@ -82,35 +82,35 @@
       "date": "5.11.2026",
       "players": [
         {
-          "name": "Felix",
+          "name": "Wiebke",
           "pos": 1,
-          "cat1": "Geschichte",
-          "correct1": 2,
-          "cat2": "Geschichte",
-          "correct2": 2
-        },
-        {
-          "name": "Alex",
-          "pos": 2,
-          "cat1": "Welt & Natur",
+          "cat1": "Literatur & Medien",
           "correct1": 0,
-          "cat2": "Sport & Spiele",
-          "correct2": 2
+          "cat2": "Politik & Wirtschaft",
+          "correct2": 0
         },
         {
-          "name": "Dennis",
+          "name": "Frauke",
+          "pos": 2,
+          "cat1": "Film & Fernsehen",
+          "correct1": 1,
+          "cat2": "Film & Fernsehen",
+          "correct2": 0
+        },
+        {
+          "name": "Annika",
           "pos": 3,
           "cat1": "Kunst & Kultur",
           "correct1": 2,
-          "cat2": "Lifestyle & Technik",
+          "cat2": "Kunst & Kultur",
           "correct2": 1
         },
         {
-          "name": "Jonas",
+          "name": "Benjamin",
           "pos": 4,
-          "cat1": "Bonus 2",
+          "cat1": "Geschichte",
           "correct1": 1,
-          "cat2": "Bonus 2",
+          "cat2": "Lifestyle & Technik",
           "correct2": 1
         }
       ]
@@ -120,36 +120,36 @@
       "date": "5.11.2026",
       "players": [
         {
-          "name": "Jessica",
+          "name": "Jörn",
           "pos": 1,
-          "cat1": "Musik",
+          "cat1": "Politik & Wirtschaft",
           "correct1": 0,
+          "cat2": "Politik & Wirtschaft",
+          "correct2": 1
+        },
+        {
+          "name": "Peter",
+          "pos": 2,
+          "cat1": "Literatur & Medien",
+          "correct1": 1,
+          "cat2": "Geschichte",
+          "correct2": 0
+        },
+        {
+          "name": "Benjamin",
+          "pos": 3,
+          "cat1": "Bonus 2",
+          "correct1": 1,
           "cat2": "Lifestyle & Technik",
           "correct2": 1
         },
         {
-          "name": "Dennis",
-          "pos": 2,
+          "name": "Annika",
+          "pos": 4,
           "cat1": "Lifestyle & Technik",
           "correct1": 1,
           "cat2": "Kunst & Kultur",
-          "correct2": 2
-        },
-        {
-          "name": "Jonas T",
-          "pos": 3,
-          "cat1": "Bonus 2",
-          "correct1": 2,
-          "cat2": "Literatur & Medien",
-          "correct2": 0
-        },
-        {
-          "name": "Felix",
-          "pos": 4,
-          "cat1": "Geschichte",
-          "correct1": 2,
-          "cat2": "Geschichte",
-          "correct2": 2
+          "correct2": 1
         }
       ]
     },
@@ -158,36 +158,36 @@
       "date": "5.11.2026",
       "players": [
         {
-          "name": "Alex",
+          "name": "Frauke",
           "pos": 1,
-          "cat1": "Geschichte",
+          "cat1": "Lifestyle & Technik",
           "correct1": 1,
-          "cat2": "Politik & Wirtschaft",
-          "correct2": 2
+          "cat2": "Lifestyle & Technik",
+          "correct2": 1
         },
         {
-          "name": "Jonas T",
+          "name": "Peter",
           "pos": 2,
-          "cat1": "Bonus 2",
+          "cat1": "Welt & Natur",
           "correct1": 0,
-          "cat2": "Wissenschaft",
-          "correct2": 0
-        },
-        {
-          "name": "Jonas",
-          "pos": 3,
-          "cat1": "Wissenschaft",
-          "correct1": 1,
-          "cat2": "Bonus 1",
-          "correct2": 0
-        },
-        {
-          "name": "Felix",
-          "pos": 4,
-          "cat1": "Kunst & Kultur",
-          "correct1": 2,
-          "cat2": "Geschichte",
+          "cat2": "Film & Fernsehen",
           "correct2": 2
+        },
+        {
+          "name": "Benjamin",
+          "pos": 3,
+          "cat1": "Film & Fernsehen",
+          "correct1": 1,
+          "cat2": "Kunst & Kultur",
+          "correct2": 1
+        },
+        {
+          "name": "Jörn",
+          "pos": 4,
+          "cat1": "Politik & Wirtschaft",
+          "correct1": 2,
+          "cat2": "Politik & Wirtschaft",
+          "correct2": 0
         }
       ]
     },
@@ -196,35 +196,35 @@
       "date": "5.11.2026",
       "players": [
         {
-          "name": "Jonas",
+          "name": "Wiebke",
           "pos": 1,
-          "cat1": "Film & Fernsehen",
-          "correct1": 0,
-          "cat2": "Film & Fernsehen",
-          "correct2": 2
-        },
-        {
-          "name": "Jessica",
-          "pos": 2,
           "cat1": "Musik",
-          "correct1": 1,
+          "correct1": 0,
           "cat2": "Musik",
           "correct2": 1
         },
         {
-          "name": "Dennis",
-          "pos": 3,
-          "cat1": "Kunst & Kultur",
+          "name": "Peter",
+          "pos": 2,
+          "cat1": "Film & Fernsehen",
           "correct1": 1,
-          "cat2": "Kunst & Kultur",
-          "correct2": 2
+          "cat2": "Film & Fernsehen",
+          "correct2": 1
         },
         {
-          "name": "Felix",
-          "pos": 4,
-          "cat1": "Bonus 2",
+          "name": "Jörn",
+          "pos": 3,
+          "cat1": "Geschichte",
           "correct1": 1,
-          "cat2": "Politik & Wirtschaft",
+          "cat2": "Geschichte",
+          "correct2": 0
+        },
+        {
+          "name": "Frauke",
+          "pos": 4,
+          "cat1": "Lifestyle & Technik",
+          "correct1": 0,
+          "cat2": "Bonus 2",
           "correct2": 1
         }
       ]
@@ -234,35 +234,35 @@
       "date": "5.11.2026",
       "players": [
         {
-          "name": "Alex",
+          "name": "Wiebke",
           "pos": 1,
-          "cat1": "Politik & Wirtschaft",
-          "correct1": 1,
-          "cat2": "Geschichte",
+          "cat1": "Lifestyle & Technik",
+          "correct1": 0,
+          "cat2": "Lifestyle & Technik",
           "correct2": 1
         },
         {
-          "name": "Dennis",
+          "name": "Peter",
           "pos": 2,
-          "cat1": "Kunst & Kultur",
-          "correct1": 0,
-          "cat2": "Lifestyle & Technik",
-          "correct2": 0
+          "cat1": "Geschichte",
+          "correct1": 1,
+          "cat2": "Film & Fernsehen",
+          "correct2": 1
         },
         {
-          "name": "Jonas T",
+          "name": "Annika",
           "pos": 3,
-          "cat1": "Film & Fernsehen",
-          "correct1": 2,
-          "cat2": "Wissenschaft",
-          "correct2": 0
+          "cat1": "Kunst & Kultur",
+          "correct1": 1,
+          "cat2": "Kunst & Kultur",
+          "correct2": 2
         },
         {
-          "name": "Felix",
+          "name": "Benjamin",
           "pos": 4,
-          "cat1": "Bonus 1",
-          "correct1": 2,
-          "cat2": "Bonus 2",
+          "cat1": "Musik",
+          "correct1": 0,
+          "cat2": "Politik & Wirtschaft",
           "correct2": 1
         }
       ]
