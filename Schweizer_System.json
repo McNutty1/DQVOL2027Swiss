@@ -2,7 +2,7 @@
   "round": 1,
   "teams": [
     {
-      "id": "t1",
+      "id": "amp",
       "name": "Amnesiophobie"
     },
     {
@@ -86,39 +86,39 @@
   "currentPairings": [
     {
       "id": "r1_m1",
-      "home": "t5",
-      "away": "t9",
+      "home": "amp",
+      "away": "t2",
       "result": "none",
       "homeAddScore": 0,
       "awayAddScore": 0
     },
     {
       "id": "r1_m2",
-      "home": "t1",
-      "away": "t12",
+      "home": "t3",
+      "away": "t4",
       "result": "none",
       "homeAddScore": 0,
       "awayAddScore": 0
     },
     {
       "id": "r1_m3",
-      "home": "t3",
-      "away": "t18",
+      "home": "t5",
+      "away": "t6",
       "result": "none",
       "homeAddScore": 0,
       "awayAddScore": 0
     },
     {
       "id": "r1_m4",
-      "home": "t4",
-      "away": "t17",
+      "home": "t7",
+      "away": "t8",
       "result": "none",
       "homeAddScore": 0,
       "awayAddScore": 0
     },
     {
       "id": "r1_m5",
-      "home": "t14",
+      "home": "t9",
       "away": "t10",
       "result": "none",
       "homeAddScore": 0,
@@ -126,40 +126,40 @@
     },
     {
       "id": "r1_m6",
-      "home": "t19",
-      "away": "t16",
+      "home": "t11",
+      "away": "t12",
       "result": "none",
       "homeAddScore": 0,
       "awayAddScore": 0
     },
     {
       "id": "r1_m7",
-      "home": "t20",
-      "away": "t8",
+      "home": "t13",
+      "away": "t14",
       "result": "none",
       "homeAddScore": 0,
       "awayAddScore": 0
     },
     {
       "id": "r1_m8",
-      "home": "t11",
-      "away": "t6",
+      "home": "t15",
+      "away": "t16",
       "result": "none",
       "homeAddScore": 0,
       "awayAddScore": 0
     },
     {
       "id": "r1_m9",
-      "home": "t13",
-      "away": "t7",
+      "home": "t17",
+      "away": "t18",
       "result": "none",
       "homeAddScore": 0,
       "awayAddScore": 0
     },
     {
       "id": "r1_m10",
-      "home": "t2",
-      "away": "t15",
+      "home": "t19",
+      "away": "t20",
       "result": "none",
       "homeAddScore": 0,
       "awayAddScore": 0
