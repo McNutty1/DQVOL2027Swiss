@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="de" class="min-h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Liga - Gegner-Analyse</title>
+					   
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">			   	
+	
+    <!-- Theme Script -->
+    <script>
+        if (localStorage.getItem('theme') === 'light' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-feature-settings: "cv02", "cv03", "cv04", "cv11"; }
+        .tabular-nums { font-variant-numeric: tabular-nums; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+																			  
+        ::-webkit-scrollbar-thumb { background: rgba(161, 161, 170, 0.4); border-radius: 3px; }
+        .dark ::-webkit-scrollbar-thumb { background: rgba(63, 63, 70, 0.7); }
+    </style>
+</head>
+<body class="min-h-full flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased selection:bg-zinc-900 selection:text-white dark:selection:bg-zinc-100 dark:selection:text-zinc-900">
+
+    <!-- Header -->
+    <header class="border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-16 py-3 sm:py-0 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center shrink-0">
+                    <i data-lucide="bar-chart-2" class="w-4 h-4 stroke-[2.25]"></i>
+                </div>
+                <div class="flex items-baseline gap-2.5">
+                    <h1 class="text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+                        Gegner-Analyse
+                    </h1>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-start sm:justify-end">
+                <!-- GitHub Gegner Auswahl Dropdown -->
+                <div class="flex items-center bg-zinc-100 dark:bg-zinc-900 px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 flex-1 sm:flex-initial min-w-[160px]">
+                    <i data-lucide="folder-git-2" class="w-3.5 h-3.5 text-zinc-500 mr-2 shrink-0"></i>
+                    <select id="github-dropdown" onchange="loadOpponentFromGithub(this.value)" class="bg-transparent text-xs font-medium text-zinc-800 dark:text-zinc-200 focus:outline-none cursor-pointer pr-1 w-full">
+                        <option value="">-- Gegner laden --</option>
+                    </select>
+                    <button onclick="fetchGithubFileList()" title="Liste aktualisieren" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 ml-1.5 p-0.5 transition shrink-0">
+                        <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                    </button>
+                </div>
+
+                <div class="h-4 w-px bg-zinc-200 dark:bg-zinc-800 mx-0.5 hidden sm:block"></div>
+
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <button onclick="loadDemoData()" class="text-xs px-2.5 sm:px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium border border-zinc-200 dark:border-zinc-800 transition flex items-center gap-1.5">
+                        Beispieldaten
+                    </button>
+                    <button onclick="exportData()" class="text-xs px-2.5 sm:px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium border border-zinc-200 dark:border-zinc-800 transition flex items-center gap-1.5">
+                        <i data-lucide="download" class="w-3.5 h-3.5 text-zinc-500"></i> Export
+                    </button>
+                    <button onclick="importDataPrompt()" class="text-xs px-2.5 sm:px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-medium border border-zinc-200 dark:border-zinc-800 transition flex items-center gap-1.5">
+                        <i data-lucide="upload" class="w-3.5 h-3.5 text-zinc-500"></i> Import
+                    </button>
+                    <button onclick="toggleTheme()" class="p-1.5 rounded-lg bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800 transition" title="Design wechseln">
+                        <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- LEFT COLUMN: Input Form & Match Entry (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+
+            <!-- Team Name & Settings Card -->
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+                <div class="flex justify-between items-center mb-2.5">
+                    <label for="opponent-name-input" class="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                        Gegnerisches Team
+                    </label>
+                    <span class="text-xs text-zinc-500 dark:text-zinc-400 tabular-nums" id="matches-count-badge">0 Spieltage</span>
+                 </div>
+                 <input type="text" id="opponent-name-input" placeholder="Teamname oder Kürzel (z. B. SWK)" 
+                       onchange="updateOpponentName(this.value)"
+                       class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3.5 py-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-transparent transition">
+            </div>
+
+            <!-- New Spieltag Entry Form -->
+             <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+                <div class="px-5 py-3.5 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-900/50">
+                    <h2 class="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                        Spieltag erfassen
+                    </h2>
+                    <span class="text-xs font-medium px-2 py-0.5 rounded bg-zinc-200/70 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 tabular-nums" id="form-match-label">Spieltag #1</span>
+                </div>
+
+                <form id="match-form" onsubmit="handleFormSubmit(event)" class="p-5 space-y-4">
+
+                    <!-- Gesamtpunktzahl Feld -->
+			  
+                    <div class="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 flex items-center justify-between gap-4">
+                        <div>
+                            <label for="team-total-score" class="text-xs font-semibold text-zinc-900 dark:text-zinc-100 block">Team-Gesamtpunkte</label>
+                            <span class="text-[11px] text-zinc-500 dark:text-zinc-400">Erzielte Punkte an diesem Spieltag</span>
+                        </div>
+                        <input type="number" id="team-total-score" step="1" min="0" placeholder="0" required
+                               class="w-20 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 text-center font-semibold text-sm text-zinc-900 dark:text-zinc-100 tabular-nums focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                    </div>
+                    
+                    <!-- Player Slots (Pos 1 to 4) -->
+                    <div class="space-y-3" id="player-inputs-container">
+                        <!-- JS injects 4 player rows -->
+                    </div>
+
+                    <button type="submit" class="w-full py-2.5 px-4 rounded-lg bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-semibold text-xs transition flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Spieltag speichern
+                    </button>
+                </form>
+            </div>
+
+            <!-- Match History List -->
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-semibold text-xs uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                        Erfasste Spieltage
+                    </h3>
+                    <button onclick="clearAllData()" class="text-xs text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 transition">
+                        Alle löschen
+                    </button>
+                </div>
+                <div id="match-history-list" class="divide-y divide-zinc-100 dark:divide-zinc-800/80 text-xs">
+                   <!-- History items -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Analysis Dashboards & Insights (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+
+            <!-- Team Performance Score Card -->
+            <div class="grid grid-cols-3 gap-4">
+                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+                    <div class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Schnitt / Spieltag</div>
+                    <div class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mt-1 tabular-nums" id="stat-avg-score">0.0</div>
+                    <div class="text-[11px] text-zinc-400 mt-0.5">Punkte Ø</div>
+                </div>
+                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+                    <div class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Bestleistung</div>
+                    <div class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mt-1 tabular-nums" id="stat-max-score">0</div>
+                    <div class="text-[11px] text-zinc-400 mt-0.5">Punkte Max</div>
+                </div>
+                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+                    <div class="text-xs font-medium text-zinc-500 dark:text-zinc-400">Gesamtpunkte</div>
+                    <div class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mt-1 tabular-nums" id="stat-total-score">0</div>
+                    <div class="text-[11px] text-zinc-400 mt-0.5">Kumuliert</div>
+						  
+                </div>
+            </div>
+
+            <!-- Category Overview Heatmap (The 12 Categories) -->
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+                <div class="flex justify-between items-baseline mb-4">
+						 
+                    <h3 class="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                        Kategorie-Analyse
+                    </h3>
+
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="category-grid">
+                    <!-- 12 categories grid injected via JS -->
+                </div>
+            </div>
+
+            <!-- Setzlisten & Positionen Grid (Pos 1-4 Analysis) -->
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+                <div class="flex justify-between items-baseline mb-4">
+                    <h3 class="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                        Positionen-Verteilung
+                    </h3>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="position-analysis-grid">
+                     <!-- Position 1 to 4 cards -->
+                </div>
+            </div>
+
+            <!-- Player Individual Scouting Cards -->
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+                <div class="flex justify-between items-baseline mb-4">
+                    <h3 class="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                        Einzelspieler
+                    </h3>
+                </div>
+                <div class="divide-y divide-zinc-100 dark:divide-zinc-800/80" id="player-scout-container">
+                    <!-- Individual players summary -->
+                </div>
+            </div>
+
+            <!-- Tactical Recommendations Banner -->
+            <div class="bg-zinc-100/80 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5">
+                <h3 class="font-semibold text-xs uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-2.5 flex items-center gap-2">
+                    <i data-lucide="info" class="w-3.5 h-3.5"></i> Auffälligkeiten & Muster
+                </h3>
+                <ul class="space-y-1.5 text-xs text-zinc-700 dark:text-zinc-300 list-disc list-inside" id="tactical-tips-list">
+                    <li>Trage mindestens 1–2 Spieltage ein, um erste Muster zu erkennen.</li>
+                </ul>
+            </div>
+
+        </div>
+
+    </main>
+    <!-- Custom Confirmation Modal (Replaces window.confirm) -->
+									  
+    <div id="toast-msg" class="fixed bottom-5 right-5 z-50 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-medium px-4 py-2.5 rounded-lg shadow-lg border border-zinc-800 dark:border-zinc-200 hidden transition-opacity">
+    </div>																																																												 	  
+
+									  
+    <div id="confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs hidden">
+        <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 max-w-sm w-full mx-4 shadow-xl">
+            <h3 id="confirm-title" class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm mb-1.5">Bestätigung</h3>
+            <p id="confirm-message" class="text-xs text-zinc-600 dark:text-zinc-400 mb-5 leading-relaxed">Möchtest du diese Aktion wirklich ausführen?</p>
+            <div class="flex justify-end gap-2.5">
+                <button id="confirm-cancel-btn" class="px-3.5 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 transition">Abbrechen</button>
+                <button id="confirm-ok-btn" class="px-3.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-medium transition">Löschen</button>
+           </div>
+        </div>
+    </div>
+
+    <script>
+        // --- GITHUB CONFIGURATION ---
+        // Passe diese Variablen an dein GitHub-Repository an:
+        const GITHUB_USER = "McNutty1";
+        const GITHUB_REPO = "DQVOL2027Swiss";
+        const GITHUB_BRANCH = "main";
+        const GITHUB_FOLDER = "";
+
+        const CATEGORIES = [
+            'Geschichte', 'Politik & Wirtschaft', 'Kunst & Kultur', 'Literatur & Medien', 
+            'Film & Fernsehen', 'Musik', 'Sport & Spiele', 'Lifestyle & Technik', 
+            'Welt & Natur', 'Wissenschaft', 'Bonus 1', 'Bonus 2'
+        ];
+
+        // State Storage
+        let appData = {
+            opponentName: 'Unbekannter Gegner',
+            matches: []
+        };
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-msg');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        function showConfirm(title, message, onConfirm) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-message').innerText = message;
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.remove('hidden');
+
+            const okBtn = document.getElementById('confirm-ok-btn');
+            const cancelBtn = document.getElementById('confirm-cancel-btn');
+
+            const newOkBtn = okBtn.cloneNode(true);
+            const newCancelBtn = cancelBtn.cloneNode(true);
+            okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+
+            newOkBtn.onclick = function() {
+                modal.classList.add('hidden');
+                onConfirm();
+            };
+            newCancelBtn.onclick = function() {
+                modal.classList.add('hidden');
+            };
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // Initialize App
+        window.onload = function() {
+            loadFromStorage();
+            renderInputForm();
+            renderAllAnalyses();
+            fetchGithubFileList();
+        };
+
+        function saveToStorage() {
+            localStorage.setItem('quiz_enemy_analysis_data', JSON.stringify(appData));
+        }
+
+        function loadFromStorage() {
+            const saved = localStorage.getItem('quiz_enemy_analysis_data');
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                } catch(e) {}
+            }
+            document.getElementById('opponent-name-input').value = appData.opponentName || '';
+        }
+
+        function updateOpponentName(val) {
+            appData.opponentName = val.trim() || 'Unbekannter Gegner';
+            saveToStorage();
+            renderAllAnalyses();
+        }
+
+        // --- GITHUB INTEGRATION ---
+
+        // 1. Liste aller Dateien aus GitHub abrufen und das Dropdown befüllen
+        async function fetchGithubFileList() {
+            const dropdown = document.getElementById('github-dropdown');
+            dropdown.innerHTML = '<option value="">Lade Gegner...</option>';
+
+            const pathUrl = GITHUB_FOLDER ? `/${GITHUB_FOLDER}` : '';
+            const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents${pathUrl}?ref=${GITHUB_BRANCH}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error('Repository nicht gefunden');
+                const files = await response.json();
+
+                // Filtern nach Dateien, die mit "Gegneranalyse" beginnen
+                const gegfiles = files.filter(file => file.name.startsWith('Gegneranalyse_'));
+
+                dropdown.innerHTML = '<option value="">-- Gegner wählen --</option>';
+
+                gegfiles.forEach(file => {
+                    // Kürzel extrahieren
+                    const teamCode = file.name.replace('Gegneranalyse_', '').replace('.json','');
+                    const option = document.createElement('option');
+                    option.value = file.download_url;
+                    option.textContent = teamCode;
+                    dropdown.appendChild(option);
+                });
+
+                if (gegfiles.length === 0) {
+                    dropdown.innerHTML = '<option value="">Keine Dateien gefunden</option>';
+                }
+            } catch (err) {
+                console.error("GitHub API Fehler:", err);
+                dropdown.innerHTML = '<option value="">GitHub nicht erreichbar</option>';
+            }
+        }
+
+        // 2. Gewählte JSON-Datei von GitHub herunterladen und laden
+        async function loadOpponentFromGithub(downloadUrl) {
+            if (!downloadUrl) return;
+
+            try {
+                const response = await fetch(downloadUrl);
+                if (!response.ok) throw new Error('Fehler beim Laden der Datei');
+                const importedData = await response.json();
+
+                if (importedData && importedData.matches) {
+                    appData = importedData;
+                    saveToStorage();
+                    document.getElementById('opponent-name-input').value = appData.opponentName || '';
+                    renderInputForm();
+                    renderAllAnalyses();
+                    showToast(`Daten für ${appData.opponentName} geladen`);																			
+                } else {
+                    showToast("Ungültiges JSON-Format");
+                }
+            } catch (err) {
+                showToast("Fehler beim Laden: " + err.message);
+            }
+        }
+
+        // Render Input Form for 4 Positions (2 Categories per Player, max 2 questions each)
+        function renderInputForm() {
+            const container = document.getElementById('player-inputs-container');
+            container.innerHTML = '';
+            
+            document.getElementById('form-match-label').innerText = `Spieltag #${appData.matches.length + 1}`;
+            document.getElementById('matches-count-badge').innerText = `${appData.matches.length} ${appData.matches.length === 1 ? 'Spieltag' : 'Spieltage'}`;
+            document.getElementById('team-total-score').value = '';														   
+
+            for (let pos = 1; pos <= 4; pos++) {
+                const catOptions = CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
+
+                const div = document.createElement('div');
+                div.className = "p-3 bg-zinc-50/70 dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 rounded-lg space-y-2.5";
+                div.innerHTML = `
+                    <div class="flex items-center justify-between gap-2 pb-1.5 border-b border-zinc-200/80 dark:border-zinc-800">
+                        <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Pos. ${pos}</span>
+                        <input type="text" id="p-name-${pos}" placeholder="Spielername" required
+                               class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md px-2.5 py-1 text-xs font-medium text-zinc-900 dark:text-zinc-100 w-48 focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <!-- Kategorie 1 -->
+                        <div class="space-y-1.5">
+																											 
+                            <select id="p-cat1-${pos}" class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md px-2 py-1 text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                                ${catOptions}
+                            </select>
+                            <div class="flex items-center justify-between text-[11px] text-zinc-500 px-0.5">
+                                <span>Treffer:</span>
+                                <div class="flex items-center gap-1 tabular-nums">
+                                    <input type="number" id="p-correct1-${pos}" min="0" max="2" value="2" required
+                                           class="w-10 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded px-1 py-0.5 text-center text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+                                    <span>/ 2</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kategorie 2 -->
+                        <div class="space-y-1.5">
+																											 
+                            <select id="p-cat2-${pos}" class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md px-2 py-1 text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-100">
+                                ${catOptions}
+                            </select>
+                            <div class="flex items-center justify-between text-[11px] text-zinc-500 px-0.5">
+                                <span>Treffer:</span>
+                                <div class="flex items-center gap-1 tabular-nums">
+                                    <input type="number" id="p-correct2-${pos}" min="0" max="2" value="2" required
+                                           class="w-10 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded px-1 py-0.5 text-center text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+                                     <span>/ 2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+
+                if (pos <= 4) {
+                    const select2 = document.getElementById(`p-cat2-${pos}`);
+                    if (select2 && select2.options.length > pos) {
+                        select2.selectedIndex = pos;
+                    }
+                }
+            }
+        }
+
+        // Handle Form Submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const teamScore = parseFloat(document.getElementById('team-total-score').value) || 0;
+
+            const matchPlayers = [];
+            for (let pos = 1; pos <= 4; pos++) {
+                const name = document.getElementById(`p-name-${pos}`).value.trim();
+                const cat1 = document.getElementById(`p-cat1-${pos}`).value;
+                const correct1 = parseInt(document.getElementById(`p-correct1-${pos}`).value) || 0;
+                
+                const cat2 = document.getElementById(`p-cat2-${pos}`).value;
+                const correct2 = parseInt(document.getElementById(`p-correct2-${pos}`).value) || 0;
+
+                matchPlayers.push({ name, pos, cat1, correct1, cat2, correct2 });
+            }
+
+            appData.matches.push({
+                round: appData.matches.length + 1,
+                date: new Date().toLocaleDateString(),
+                teamScore: teamScore,									 
+                players: matchPlayers
+            });
+
+            saveToStorage();
+            renderInputForm();
+            renderAllAnalyses();
+            showToast("Spieltag gespeichert");
+        }
+
+        // Render History List
+        function renderHistoryList() {
+            const container = document.getElementById('match-history-list');
+            container.innerHTML = '';
+
+            if (appData.matches.length === 0) {
+                container.innerHTML = '<p class="text-zinc-400 py-2">Noch keine Spieltage erfasst.</p>';
+                return;
+            }
+
+            appData.matches.slice().reverse().forEach((m, idx) => {
+                const realIdx = appData.matches.length - idx - 1;
+																																			 
+                const div = document.createElement('div');
+                div.className = "py-2.5 flex justify-between items-center gap-3";
+                div.innerHTML = `
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="font-semibold text-zinc-900 dark:text-zinc-100">Spieltag ${m.round}</span>
+                            <span class="text-[11px] font-medium px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 tabular-nums">
+                                 ${m.teamScore !== undefined ? m.teamScore + ' Pkt' : 'k.A.'}
+                            </span>
+                        </div>
+                        <span class="text-[11px] text-zinc-500 block truncate mt-0.5">${m.players.map(p => `${p.name} (${p.pos})`).join(' · ')}</span>
+                    </div>
+                    <button onclick="deleteMatch(${realIdx})" class="text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 p-1.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition shrink-0" title="Spieltag löschen">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function deleteMatch(idx) {
+            showConfirm("Spieltag löschen?", "Möchtest du diesen Spieltag wirklich entfernen?", function() {
+            appData.matches.splice(idx, 1);
+            appData.matches.forEach((m, i) => m.round = i + 1);
+            saveToStorage();
+            renderInputForm();
+            renderAllAnalyses();
+                showToast("Spieltag gelöscht");												
+            });
+        }
+
+        function clearAllData() {
+            showConfirm("Alle Daten löschen?", "Möchtest du wirklich alle erfassten Spieltage unwiderruflich löschen?", function() {
+                appData.matches = [];
+                saveToStorage();
+                renderInputForm();
+                renderAllAnalyses();
+                showToast("Alle Daten gelöscht");												  
+            });
+        }
+
+        // Core Render Aggregations
+        function renderAllAnalyses() {
+            renderTeamScoreOverview();									  
+            renderHistoryList();
+            renderCategoryGrid();
+            renderPositionAnalysis();
+            renderPlayerScouting();
+            renderTacticalTips();
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // Team Score Statistics (Berechnung der Gesamt- und Durchschnittspunkte)
+        function renderTeamScoreOverview() {
+            const scores = appData.matches.map(m => m.teamScore || 0).filter(s => s > 0);
+            
+            if (scores.length === 0) {
+                document.getElementById('stat-avg-score').innerText = '0.0';
+                document.getElementById('stat-max-score').innerText = '0';
+                document.getElementById('stat-total-score').innerText = '0';
+                return;
+            }
+
+            const total = scores.reduce((acc, curr) => acc + curr, 0);
+            const avg = total / scores.length;
+            const max = Math.max(...scores);
+		   
+
+            document.getElementById('stat-avg-score').innerText = avg.toFixed(1);
+            document.getElementById('stat-max-score').innerText = max.toString();
+            document.getElementById('stat-total-score').innerText = total.toString();
+        }																				 
+
+        // Category Analysis Grid (The 12 Categories)
+        function renderCategoryGrid() {
+            const container = document.getElementById('category-grid');
+            container.innerHTML = '';
+
+            const catStats = {};
+            CATEGORIES.forEach(c => catStats[c] = { count: 0, correct: 0, total: 0, players: {} });
+
+            appData.matches.forEach(m => {
+                m.players.forEach(p => {
+                    if (catStats[p.cat1]) {
+                        catStats[p.cat1].count += 1;
+                        catStats[p.cat1].correct += p.correct1;
+                        catStats[p.cat1].total += 2;
+                        if (p.name) {
+                            catStats[p.cat1].players[p.name] = (catStats[p.cat1].players[p.name] || 0) + 1;
+                        }
+                    }
+                    if (catStats[p.cat2]) {
+                        catStats[p.cat2].count += 1;
+                        catStats[p.cat2].correct += p.correct2;
+                        catStats[p.cat2].total += 2;
+                        if (p.name) {
+                            catStats[p.cat2].players[p.name] = (catStats[p.cat2].players[p.name] || 0) + 1;
+                        }
+                    }
+                });
+            });
+
+            const maxCount = Math.max(...Object.values(catStats).map(s => s.count), 1);
+
+            // Sortieren nach Häufigkeit (count) absteigend, bei Gleichstand nach Trefferquote
+            const sortedCategories = CATEGORIES.slice().sort((a, b) => {
+                const statA = catStats[a];
+                const statB = catStats[b];
+                if (statB.count !== statA.count) {
+                    return statB.count - statA.count;
+                }
+                const pctA = statA.total > 0 ? statA.correct / statA.total : 0;
+                const pctB = statB.total > 0 ? statB.correct / statB.total : 0;
+                return pctB - pctA;
+            });
+
+            sortedCategories.forEach(cat => {
+                const stat = catStats[cat];
+                const pct = stat.total > 0 ? Math.round((stat.correct / stat.total) * 100) : 0;
+                
+                // Häufigste Spieler für diese Kategorie ermitteln
+                const sortedCatPlayers = Object.entries(stat.players).sort((a, b) => b[1] - a[1]);
+                let playersText = 'Keine Einsätze';
+                if (sortedCatPlayers.length > 0) {
+                    const topCount = sortedCatPlayers[0][1];
+                    const topPlayers = sortedCatPlayers
+                        .filter(([_, cnt]) => cnt === topCount)
+                        .map(([name, cnt]) => `${name} (${cnt}×)`);
+                    playersText = topPlayers.join(', ');
+                }
+
+                let badgeClass = 'bg-zinc-100 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400';
+                if (stat.count > 0) {
+                    if (pct >= 75) badgeClass = 'bg-emerald-50 text-emerald-700 border border-emerald-200/80 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-800/60';
+                    else if (pct >= 50) badgeClass = 'bg-amber-50 text-amber-700 border border-amber-200/80 dark:bg-amber-950/60 dark:text-amber-400 dark:border-amber-800/60';
+                    else badgeClass = 'bg-rose-50 text-rose-700 border border-rose-200/80 dark:bg-rose-950/60 dark:text-rose-400 dark:border-rose-800/60';
+                }
+
+                const card = document.createElement('div');
+                card.className = "bg-zinc-50/70 dark:bg-zinc-950/50 border border-zinc-200/80 dark:border-zinc-800 rounded-lg p-3 flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start gap-1.5 mb-1.5">
+                            <span class="font-medium text-xs text-zinc-900 dark:text-zinc-100 leading-snug">${cat}</span>
+                            <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded tabular-nums shrink-0 ${badgeClass}">${stat.count > 0 ? pct + '%' : '–'}</span>
+                        </div>
+                        <div class="text-[11px] text-zinc-500 tabular-nums">
+                            <span class="font-semibold text-zinc-800 dark:text-zinc-200">${stat.count}×</span> gewählt · ${stat.correct}/${stat.total} Pkt
+                        </div>
+                        <div class="text-[11px] text-zinc-600 dark:text-zinc-400 mt-1 truncate" title="${playersText}">
+                            ${stat.count > 0 ? playersText : '–'}
+                        </div>
+                    </div>
+
+                    <div class="mt-2.5 w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1 overflow-hidden">
+                        <div class="bg-zinc-800 dark:bg-zinc-300 h-1 rounded-full transition-all duration-300" style="width: ${(stat.count / maxCount) * 100}%"></div>
+                     </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderPositionAnalysis() {
+            const container = document.getElementById('position-analysis-grid');
+            container.innerHTML = '';
+
+            for (let pos = 1; pos <= 4; pos++) {
+                const playerCounts = {};
+                let totalPlayedInPos = 0;
+
+                appData.matches.forEach(m => {
+                    const p = m.players.find(x => x.pos === pos);
+                    if (p && p.name) {
+                        playerCounts[p.name] = (playerCounts[p.name] || 0) + 1;
+                        totalPlayedInPos++;
+                    }
+                });
+
+                const sortedPlayers = Object.entries(playerCounts).sort((a, b) => b[1] - a[1]);
+
+                const card = document.createElement('div');
+                card.className = "bg-zinc-50/70 dark:bg-zinc-950/50 border border-zinc-200/80 dark:border-zinc-800 rounded-lg p-3.5";
+                
+                let listHtml = sortedPlayers.map(([name, count]) => {
+                    const pct = Math.round((count / totalPlayedInPos) * 100);
+                    return `
+                       <div class="flex justify-between text-xs py-1">
+                            <span class="font-medium text-zinc-800 dark:text-zinc-200">${name}</span>
+                            <span class="text-zinc-500 tabular-nums">${count}× <span class="text-zinc-400">(${pct}%)</span></span>
+                      </div>
+                    `;
+                }).join('');
+
+                if (sortedPlayers.length === 0) listHtml = '<span class="text-zinc-400 text-xs">Keine Daten</span>';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-2 pb-1.5 border-b border-zinc-200/80 dark:border-zinc-800">
+                        <span class="font-semibold text-xs text-zinc-900 dark:text-zinc-100">Position ${pos}</span>
+                        <span class="text-[11px] text-zinc-400 tabular-nums">${totalPlayedInPos} Einsätze</span>
+                    </div>
+                    <div class="divide-y divide-zinc-100 dark:divide-zinc-800/60">${listHtml}</div>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        // Player Scouting Cards
+        function renderPlayerScouting() {
+            const container = document.getElementById('player-scout-container');
+            container.innerHTML = '';
+
+            const playerMap = {};
+
+            appData.matches.forEach(m => {
+                m.players.forEach(p => {
+                    if (!p.name) return;
+                    if (!playerMap[p.name]) {
+                        playerMap[p.name] = {
+                            name: p.name,
+                            positions: {},
+                            categories: {},
+                            matchCount: 0,										  
+                            correct: 0,
+                            total: 0
+                        };
+                    }
+                    const pm = playerMap[p.name];
+                    pm.matchCount += 1;								   
+                    pm.positions[p.pos] = (pm.positions[p.pos] || 0) + 1;
+                    
+                    pm.categories[p.cat1] = (pm.categories[p.cat1] || 0) + 1;
+                    pm.categories[p.cat2] = (pm.categories[p.cat2] || 0) + 1;
+                    
+                    pm.correct += (p.correct1 + p.correct2);
+                    pm.total += 4;
+                });
+            });
+
+            const players = Object.values(playerMap);
+            if (players.length === 0) {
+                container.innerHTML = '<p class="text-zinc-400 text-xs py-2">Noch keine Spielerdaten vorhanden.</p>';
+                return;
+            }
+
+            // Meistgespielte Position bestimmen und nach Position 1 bis 4 sortieren
+            players.forEach(p => {
+                const favPosEntry = Object.entries(p.positions).sort((a,b) => b[1] - a[1])[0];
+                p.primaryPos = favPosEntry ? parseInt(favPosEntry[0]) : 99;
+                p.primaryPosCount = favPosEntry ? favPosEntry[1] : 0;																	 
+            });
+
+            players.sort((a, b) => {
+                if (a.primaryPos !== b.primaryPos) {
+                    return a.primaryPos - b.primaryPos;
+                }
+                return b.total - a.total;
+            });		   
+
+            players.forEach(p => {
+                const pct = p.total > 0 ? Math.round((p.correct / p.total) * 100) : 0;
+                
+                const favCats = Object.entries(p.categories)
+                    .sort((a,b) => b[1] - a[1])
+                    .slice(0, 3)
+                    .map(([cat, count]) => `${cat} (${count}×)`);
+
+                const row = document.createElement('div');
+                row.className = "py-3 first:pt-0 last:pb-0 flex flex-wrap justify-between items-center gap-3";
+                row.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h4 class="font-semibold text-sm text-zinc-900 dark:text-zinc-100">${p.name}</h4>
+                            <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 tabular-nums">
+                                ${p.primaryPosCount}/${p.matchCount} Spiele (Pos. ${p.primaryPos !== 99 ? p.primaryPos : '-'})
+                            </span>
+                        </div>
+                        <div class="text-xs text-zinc-500 mt-1 tabular-nums">
+                            <span class="text-zinc-700 dark:text-zinc-300 font-medium">${favCats.join(', ') || 'Keine'}</span>
+                        </div>
+                    </div>
+                    <div class="text-right tabular-nums">
+                        <div class="text-sm font-bold text-zinc-900 dark:text-zinc-100">${pct}%</div>
+                        <div class="text-[11px] text-zinc-500">${p.correct} / ${p.total} Pkt</div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        // Tactical Recommendations Engine
+        function renderTacticalTips() {
+            const list = document.getElementById('tactical-tips-list');
+            list.innerHTML = '';
+
+            if (appData.matches.length === 0) {
+                list.innerHTML = '<li>Trage mindestens 1–2 Spieltage ein, um erste Muster zu erkennen.</li>';
+                return;
+            }
+
+            const tips = [];
+
+            const catCounts = {};
+            CATEGORIES.forEach(c => catCounts[c] = 0);
+            appData.matches.forEach(m => m.players.forEach(p => {
+                catCounts[p.cat1]++;
+                catCounts[p.cat2]++;
+            }));
+            
+            const neverChosen = CATEGORIES.filter(c => catCounts[c] === 0);
+            if (neverChosen.length > 0) {
+                tips.push(`<strong>Bisher gemieden:</strong> ${neverChosen.slice(0, 3).join(', ')} wurden noch nie gewählt.`);
+            }
+
+            const catStats = {};
+            CATEGORIES.forEach(c => catStats[c] = { correct: 0, total: 0 });
+            appData.matches.forEach(m => m.players.forEach(p => {
+                catStats[p.cat1].correct += p.correct1;
+                catStats[p.cat1].total += 2;
+                catStats[p.cat2].correct += p.correct2;
+                catStats[p.cat2].total += 2;
+            }));
+
+            const strongCats = Object.entries(catStats)
+                .filter(([_, s]) => s.total >= 4)
+                .map(([c, s]) => ({ c, pct: Math.round((s.correct / s.total) * 100) }))
+                .sort((a,b) => b.pct - a.pct);
+
+            if (strongCats.length > 0 && strongCats[0].pct >= 75) {
+                tips.push(`<strong>Stärkste Kategorie:</strong> ${strongCats[0].c} mit ${strongCats[0].pct}% Trefferquote.`);
+            }
+
+            const pos1Players = {};
+            appData.matches.forEach(m => {
+                const p = m.players.find(x => x.pos === 1);
+                if (p) pos1Players[p.name] = (pos1Players[p.name] || 0) + 1;
+            });
+            const topPos1 = Object.entries(pos1Players).sort((a,b) => b[1] - a[1])[0];
+            if (topPos1 && (topPos1[1] / appData.matches.length) >= 0.6) {
+                tips.push(`<strong>Konstante Pos. 1:</strong> ${topPos1[0]} spielt zu ${Math.round((topPos1[1]/appData.matches.length)*100)}% auf Position 1.`);
+            }
+
+            if (tips.length === 0) {
+                tips.push("Erfasse weitere Spieltage für tiefere Musteranalysen.");
+            }
+
+            tips.forEach(t => {
+                const li = document.createElement('li');
+                li.innerHTML = t;
+                list.appendChild(li);
+            });
+        }
+
+        function loadDemoData() {
+            appData = {
+                opponentName: 'Suedwestkurve',
+                matches: [
+                    {
+                        round: 1, date: '01.10.', teamScore: 48,
+                        players: [
+                            { name: 'Michael S.', pos: 1, cat1: 'Geschichte', correct1: 2, cat2: 'Politik & Wirtschaft', correct2: 2 },
+                            { name: 'Katrin B.', pos: 2, cat1: 'Literatur & Medien', correct1: 2, cat2: 'Kunst & Kultur', correct2: 1 },
+                            { name: 'Thomas M.', pos: 3, cat1: 'Sport & Spiele', correct1: 1, cat2: 'Musik', correct2: 1 },
+                            { name: 'Stefan K.', pos: 4, cat1: 'Film & Fernsehen', correct1: 1, cat2: 'Lifestyle & Technik', correct2: 2 }
+                        ]
+                    },
+                    {
+                        round: 2, date: '08.10.', teamScore: 52,
+                        players: [
+                            { name: 'Michael S.', pos: 1, cat1: 'Geschichte', correct1: 2, cat2: 'Wissenschaft', correct2: 2 },
+                            { name: 'Thomas M.', pos: 2, cat1: 'Sport & Spiele', correct1: 2, cat2: 'Musik', correct2: 1 },
+                            { name: 'Katrin B.', pos: 3, cat1: 'Kunst & Kultur', correct1: 2, cat2: 'Literatur & Medien', correct2: 2 },
+                            { name: 'Stefan K.', pos: 4, cat1: 'Film & Fernsehen', correct1: 1, cat2: 'Bonus 1', correct2: 0 }
+                        ]
+                    },
+                    {
+                        round: 3, date: '15.10.', teamScore: 46,
+                        players: [
+                            { name: 'Michael S.', pos: 1, cat1: 'Politik & Wirtschaft', correct1: 2, cat2: 'Geschichte', correct2: 1 },
+                            { name: 'Katrin B.', pos: 2, cat1: 'Literatur & Medien', correct1: 2, cat2: 'Welt & Natur', correct2: 1 },
+                            { name: 'Stefan K.', pos: 3, cat1: 'Musik', correct1: 1, cat2: 'Film & Fernsehen', correct2: 1 },
+                            { name: 'Christian R.', pos: 4, cat1: 'Bonus 2', correct1: 2, cat2: 'Lifestyle & Technik', correct2: 1 }
+                        ]
+                    }
+                ]
+            };
+            saveToStorage();
+            document.getElementById('opponent-name-input').value = appData.opponentName;
+            renderInputForm();
+            renderAllAnalyses();
+            showToast("Beispieldaten geladen");
+        }
+
+        // Export/Import State
+        function exportData() {
+            const teamCode = appData.opponentName.replace(/\s+/g, '_');
+            const fileName = `Gegneranalyse_${teamCode}.json`;
+
+            const jsonStr = JSON.stringify(appData, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importDataPrompt() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = event => {
+                        try {
+                            const imported = JSON.parse(event.target.result);
+                            if (imported.matches) {
+                                appData = imported;
+                                saveToStorage();
+                                document.getElementById('opponent-name-input').value = appData.opponentName || '';
+                                renderInputForm();
+                                renderAllAnalyses();
+                                showToast("Daten erfolgreich importiert");
+                            } else {
+                                showToast("Ungültiges JSON-Format");
+                            }
+                        } catch(err) {
+                            showToast("Fehler beim Lesen der Datei");
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+    </script>
+</body>
+</html>
