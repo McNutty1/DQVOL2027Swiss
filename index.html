@@ -140,10 +140,11 @@ DQV Online-Liga Saison 2027 — Vorrunde
 
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm flex flex-col overflow-hidden">
         <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900">
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
                 <i data-lucide="swords" class="w-4 h-4 text-slate-500"></i>
                 <h3 class="font-semibold text-sm text-slate-900 dark:text-white" id="current-round-title">Paarungen Runde 1</h3>
-                        <span id="pairing-mode-badge" class="inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Fester Spieltag</span>																																																																		 
+                <span id="current-round-date" class="inline-flex items-center text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800/60">27. Jan.</span>
+                <span id="pairing-mode-badge" class="inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">Fester Spieltag</span>
             </div>
             <div class="relative flex items-center">
                 <select id="round-preset-select" onchange="applyRoundPreset(this.value)"
@@ -244,6 +245,19 @@ DQV Online-Liga Saison 2027 — Vorrunde
                 ['t10', 't11'], ['t13', 't16'], ['t14', 't15'], ['t17', 't20'], ['t18', 't19']
             ]
         };
+
+        const roundDates = {
+            1: '27. Jan.',
+            2: '10. Feb.',
+            3: '24. Feb.',
+            4: '17. März',
+            5: '07. Apr.',
+            6: '21. Apr.',
+            7: '05. Mai',
+            8: '26. Mai',
+            9: '09. Juni'
+        };
+
         let state = {
             round: 1,
             teams: [],
@@ -508,7 +522,19 @@ DQV Online-Liga Saison 2027 — Vorrunde
 
             document.getElementById('round-badge').innerText = `Runde ${state.round}`;
             document.getElementById('current-round-title').innerText = `Paarungen Runde ${state.round}`;
-const modeBadge = document.getElementById('pairing-mode-badge');
+            
+            const dateBadge = document.getElementById('current-round-date');
+            if (dateBadge) {
+                const dateStr = roundDates[state.round];
+                if (dateStr) {
+                    dateBadge.innerText = dateStr;
+                    dateBadge.classList.remove('hidden');
+                } else {
+                    dateBadge.classList.add('hidden');
+                }
+            }
+
+            const modeBadge = document.getElementById('pairing-mode-badge');
             if (modeBadge) {
                 // Prüfen, ob die Runde bereits fest in den absolvierten Runden liegt oder fix im Schedule steht
                 const isCompleted = state.completedRounds.some(r => r.round === Number(state.round));
@@ -639,7 +665,8 @@ function renderFixtures() {
                     return `<div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/40 last:border-0 text-slate-600 dark:text-slate-400"><span>${h} vs ${a}</span><span class="font-mono font-medium text-slate-800 dark:text-slate-200">${pts.homeP}:${pts.awayP} <span class="text-slate-400 text-[10px]">(${m.homeAddScore}:${m.awayAddScore})</span></span></div>`;
                 }).join('');
 
-                details.innerHTML = `<summary class="font-medium cursor-pointer text-slate-700 dark:text-slate-300">Runde ${r.round}</summary><div class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 space-y-0.5">${matchesHtml}</div>`;
+                const rDate = roundDates[r.round] ? ` <span class="text-slate-400 font-normal font-mono text-[11px] ml-1">(${roundDates[r.round]})</span>` : '';
+                details.innerHTML = `<summary class="font-medium cursor-pointer text-slate-700 dark:text-slate-300">Runde ${r.round}${rDate}</summary><div class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 space-y-0.5">${matchesHtml}</div>`;
                 container.appendChild(details);
             });
         }
@@ -873,4 +900,48 @@ function renderFixtures() {
         };
     </script>
 </body>
+<!-- Globaler Footer -->
+<footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 mt-auto text-xs text-slate-600 dark:text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        
+        <!-- Spalte 1: Über das Projekt -->
+        <div class="space-y-3">
+            <div class="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
+                <i data-lucide="brain" class="w-4 h-4 text-sky-500"></i>
+                <span>Gedächtnisteam</span>
+            </div>
+        </div>
+
+        <!-- Spalte 2: Navigation / Deine verlinkten Seiten -->
+        <div class="space-y-2">
+            <h4 class="font-semibold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Seiten & Tools</h4>
+            <ul class="space-y-1.5">
+                <li><a href="index.html" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Vorrunde 2027</a></li>			
+                <li><a href="Gegner.html" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Gegner-Analyse</a></li>
+                <li><a href="Hauptrunde.html" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Hauptrunde 2027</a></li>
+				<!-- Füge hier weitere deiner Seiten hinzu -->
+				
+                <!-- <li><a href="deine-naechste-seite.html" class="hover:text-sky-600 dark:hover:text-sky-400 transition">Name der Seite</a></li> -->
+            </ul>
+        </div>
+
+        <!-- Spalte 3: Externe Links / Offizielle Links -->
+        <div class="space-y-2">
+            <h4 class="font-semibold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Links</h4>
+            <ul class="space-y-1.5">
+                <li>
+                    <a href="https://results.quiznations.com/gerix" target="_blank" rel="noopener noreferrer" class="hover:text-sky-600 dark:hover:text-sky-400 transition flex items-center gap-1">
+                        QuizNations Tabelle <i data-lucide="external-link" class="w-3 h-3 text-slate-400"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://drive.google.com/drive/folders/1G6lD1a31IvCIhSxtoDvyEQSxyDYKhWyU?usp=drive_link" target="_blank" rel="noopener noreferrer" class="hover:text-sky-600 dark:hover:text-sky-400 transition flex items-center gap-1">
+                        Dateiablage <i data-lucide="external-link" class="w-3 h-3 text-slate-400"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</footer>
 </html>
